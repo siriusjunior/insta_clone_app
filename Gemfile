@@ -19,8 +19,9 @@ gem 'html2slim'
 gem 'annotate'
 gem 'sorcery'
 
-# rails-i18n
-gem 'rails-i18n'
+# rails5系なら以下を記述
+# For 5.0.x, 5.1.x and 5.2.x
+gem 'rails-i18n', '~> 5.1' 
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
