@@ -12,6 +12,7 @@ gem 'mysql2', '~> 0.4.4'
 gem 'puma', '~> 3.11'
 # Use SCSS for stylesheets
 gem 'sass-rails'
+gem 'font-awesome-sass', '~> 5.15.1'
 # jquery-rails
 gem 'jquery-rails'
 gem 'slim-rails'
