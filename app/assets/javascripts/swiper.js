@@ -4,4 +4,4 @@ $(function() {
             el: '.swiper-pagination',
         },
     })
-})  
+})   
