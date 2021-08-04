@@ -16,6 +16,7 @@ gem 'font-awesome-sass', '~> 5.15.1'
 # jquery-rails
 gem 'jquery-rails'
 gem 'slim-rails'
+gem 'kaminari'
 #　railsでslimを利用するためのgem
 gem 'html2slim'
 #　html.erbをhtmle.slimに変換するためのgem
@@ -24,7 +25,6 @@ gem 'sorcery'
 # rails5系なら以下を記述
 # For 5.0.x, 5.1.x and 5.2.x
 gem 'rails-i18n', '~> 5.1' 
-
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
