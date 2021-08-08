@@ -27,20 +27,14 @@
           = simple_format(@post.body)
       hr
       / コメント一覧
-      .row.no-gutters
-        .col-2
-          = image_tag 'profile-placeholder.png', size: '40x40', class: 'rounded-circle'
-        .col-10
-          | ダミーコメントダミーコメントダミーコメント
-      hr
-      .row.no-gutters
-        .col-2
-          = image_tag 'profile-placeholder.png', size: '40x40', class: 'rounded-circle'
-        .col-10
-          | ダミーコメントダミーコメントダミーコメント
-    hr.m-0
-    .post-comment.p-3
-      form.form-inline.mb-0
-        input type="text" class="form-control input-comment-body" placeholder="コメント"
-        button type="submit" class="btn btn-primary btn-raised"
-          | 投稿
+      = render 'comments/comments', comments: @comments
+    - if logged_in?
+      hr.m-0
+      .post-comment.p-3
+        = render 'comments/form', post: @post, comment: @comment
+    - else
+      hr.m-0
+      span.p-4
+        |コメントを投稿するには<br>こちらから
+        = link_to 'ログイン', login_path
+        |してください
