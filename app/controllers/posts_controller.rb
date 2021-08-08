@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
     before_action :require_login, only: %i[new create edit update destroy]
+    before_action :logged_in_user, only: %i[index show]
     
     def index
         @posts = Post.all.includes(:user).page(params[:page]).per(15).order(created_at: :desc)
@@ -35,7 +36,9 @@ class PostsController < ApplicationController
 
     def show
         @post = Post.find(params[:id])
-    end
+        @comments = @post.comments.includes(:user).order(created_at: :asc)
+        @comment = Comment.new
+    end 
 
     def destroy
         @post = current_user.posts.find(params[:id])
@@ -44,7 +47,14 @@ class PostsController < ApplicationController
     end
 
     private
+
         def post_params
             params.require(:post).permit(:body, images: [])
+        end
+        
+        def logged_in_user
+            unless logged_in?
+                store_location
+            end
         end
 end
