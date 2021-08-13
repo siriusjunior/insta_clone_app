@@ -3,7 +3,12 @@ class PostsController < ApplicationController
     before_action :logged_in_user, only: %i[index show]
     
     def index
-        @posts = Post.all.includes(:user).page(params[:page]).per(15).order(created_at: :desc)
+        @posts = if current_user
+                    current_user.feed.includes(:user).page(params[:page]).order(created_at: :desc)
+                else
+                    Post.all.includes(:user).page(params[:page]).order(created_at: :desc)
+                end
+        @users = User.recent(5)
     end
     
     def new
