@@ -1,0 +1,13 @@
+.container 
+    .row 
+        .col-md-8.col-12.offset-md-2 
+            h2.text-center 
+                - if @posts.nil?
+                    - if @search_form.body.present? || @search_form.comment_body.present? || @search_form.username.present?
+                        | 0 results for #{ @search_form.body } #{ @search_form.comment_body } #{ @search_form.username}
+                - else
+                    | #{ @posts.total_count.to_i }results for #{ @search_form.body } #{ @search_form.comment_body } #{ @search_form.username}
+                    = render @posts
+                    = paginate @posts
+            
+            

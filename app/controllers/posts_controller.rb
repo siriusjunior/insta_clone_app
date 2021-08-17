@@ -51,6 +51,15 @@ class PostsController < ApplicationController
         redirect_to posts_path, success: '投稿を削除しました'
     end
 
+    def search
+        if !@search_form.search.nil?
+            @posts = @search_form.search.includes(:user).page(params[:page])
+        else
+            flash.now[:warning] = "検索語を入力してください"
+            render :search
+        end
+    end
+
     private
 
         def post_params
