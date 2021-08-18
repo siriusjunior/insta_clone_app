@@ -71,4 +71,5 @@ class PostsController < ApplicationController
                 store_location
             end
         end
+
 end
