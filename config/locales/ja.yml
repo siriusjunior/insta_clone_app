@@ -8,6 +8,7 @@ ja:
         email: 'メールアドレス'
         password: 'パスワード'
         password_confirmation: 'パスワード確認'
+        avator: 'アバター'
   
   attributes:
     created_at: '作成日時'
