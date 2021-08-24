@@ -2,14 +2,28 @@ ja:
   activerecord:
     models:
       user: 'ユーザー'
+      post: '投稿'
+      comment: 'コメント'
     attributes:
       user:
-        username: 'ユーザー名'
         email: 'メールアドレス'
         password: 'パスワード'
         password_confirmation: 'パスワード確認'
-        avator: 'アバター'
-  
+        username: 'ユーザー名'
+        avatar: 'アバター'
+      post:
+        images: '画像'
+        body: '本文'
+      comment:
+        body: 'コメント'
+        user_id: 'ユーザー'
+        post_id: '投稿'
+
   attributes:
     created_at: '作成日時'
     updated_at: '更新日時'
+  time:
+    formats:
+      default: "%Y年%m月%d日(%a) %H時%M分%S秒 %z"
+      long: "%Y/%m/%d %H:%M"
+      short: "%m/%d %H:%M"

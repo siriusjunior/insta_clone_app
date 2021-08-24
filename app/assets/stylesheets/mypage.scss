@@ -1,7 +1,23 @@
 @import 'bootstrap-material-design/dist/css/bootstrap-material-design';
 @import "font-awesome-sprockets";
 @import "font-awesome";
+@import "header";
 
 main {
     padding-top: 50px;
+}
+
+.read {
+    background: #f1f1f1;
+}
+
+.pagination {
+    justify-content: center;
+    margin-top: 40px;
+    margin-bottom: 60px;
+}
+
+.page-link {
+    min-width: 2.3em;
+    border-radius: 4em;
 }

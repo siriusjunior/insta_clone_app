@@ -1,6 +1,7 @@
 @import 'bootstrap-material-design/dist/css/bootstrap-material-design';
 @import "font-awesome-sprockets";
 @import "font-awesome";
+@import "header";
 
 body {
     position: relative;
@@ -127,4 +128,20 @@ body {
     top: 0;
     object-fit: cover;
   }
+}
+
+@mixin box_sizing {
+  -moz-box-sizing:    border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing:         border-box;
+}
+/* miscellaneous */
+.debug_dump {
+  clear: both;
+  float: left;
+  background-color: lightgray;
+  width: 100%;
+  margin-top: 100px;
+  font-size: .8rem;
+  @include box_sizing;
 }
