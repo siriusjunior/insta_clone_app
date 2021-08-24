@@ -10,3 +10,14 @@ main {
 .read {
     background: #f1f1f1;
 }
+
+.pagination {
+    justify-content: center;
+    margin-top: 40px;
+    margin-bottom: 60px;
+}
+
+.page-link {
+    min-width: 2.3em;
+    border-radius: 4em;
+}
