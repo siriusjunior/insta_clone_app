@@ -19,10 +19,9 @@ html
       = yield
       = render 'shared/modal'
       / = debug(params) if Rails.env.development?
-    / swiperのCDN読み込み
     link[rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.css"]
     link[rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"]
     script[src="https://unpkg.com/swiper/swiper-bundle.js"]
     script[src="https://unpkg.com/swiper/swiper-bundle.min.js"]
     script
-      |  var swiper = new Swiper('.swiper-container', { pagination: { el: '.swiper-pagination',} }); 
+      |  var swiper = new Swiper('.swiper', { pagination: { el: '.swiper-pagination',} }); 

@@ -15,12 +15,12 @@
                 / いいね機能を実装
                 = render 'like_area', post: post
     = link_to post_path(post) do 
-        .swiper-container
+        .swiper
             .swiper-wrapper 
                 - post.images.each do |image|
                     .swiper-slide
                         = image_tag image.url, class: 'card-img-top'
             .swiper-pagination
-    .card-body 
+    .card-body
         .card-text 
             = post.body

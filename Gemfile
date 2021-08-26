@@ -17,6 +17,8 @@ gem 'font-awesome-sass', '~> 5.15.1'
 gem 'jquery-rails'
 gem 'slim-rails'
 gem 'kaminari'
+# 定数管理のgem
+gem 'config'
 #　railsでslimを利用するためのgem
 gem 'html2slim'
 #　html.erbをhtmle.slimに変換するためのgem
@@ -68,6 +70,7 @@ group :development do
   gem 'binding_of_caller'
   gem 'pry-byebug'
   gem 'pry-rails'
+  gem 'letter_opener_web'
 end
 
 group :test do
