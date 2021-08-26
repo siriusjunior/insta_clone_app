@@ -15,7 +15,7 @@
                 / いいね機能を実装
                 = render 'like_area', post: post
     = link_to post_path(post) do 
-        .swiper-container
+        .swiper
             .swiper-wrapper 
                 - post.images.each do |image|
                     .swiper-slide
