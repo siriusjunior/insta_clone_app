@@ -19,6 +19,8 @@ gem 'slim-rails'
 gem 'kaminari'
 # 定数管理のgem
 gem 'config'
+gem 'sidekiq'
+gem 'sinatra'
 #　railsでslimを利用するためのgem
 gem 'html2slim'
 #　html.erbをhtmle.slimに変換するためのgem
