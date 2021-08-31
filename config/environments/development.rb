@@ -64,4 +64,6 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = Settings.default_url_options.to_h
   config.action_mailer.delivery_method = :letter_opener_web
+  # ngrok導入時のアドレス対処
+  config.web_console.whitelisted_ips = '2404:7a85:2e0:3410:c95a:de59:23f9:b93'
 end
