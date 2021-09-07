@@ -128,18 +128,26 @@ RSpec.describe '投稿', type: :system do
                 let(:user2) { create(:user, username: "lana") }
                 let(:user3) { create(:user, username: "archer") }
                 let!(:post1_by_user1) { create(:post, body: "This post really ties the room together.", user: user1)}
-                let!(:post2_by_user2) { create(:post, body: "Oh, is that what you want? Because that's how you get ants!", user: user2)}
+                let!(:post2_by_user2) { create(:post, body: "Oh, is that room what you want? Because that's how you get ants!", user: user2)}
                 let!(:post3_by_user3) { create(:post, body: "I'm sorry. Your words made sense, but your sarcastic tone did not.", user: user3)}
                 before do
                     user2.comments.create(body: "Does it really tie together??", post: post1_by_user1)
                 end
             it '単一検索で該当の投稿がヒットすること' do
                 visit posts_path
+                find_by_id('q_body').set("ants")
+                find_by_id('q_comment_body').set("")
+                find_by_id('q_username').set("")
+                click_button 'Search'
+                expect(page).to have_content "1 result for ants"
+            end
+            it '単一検索で該当の投稿がヒットすること' do
+                visit posts_path
                 find_by_id('q_body').set("room")
                 find_by_id('q_comment_body').set("")
                 find_by_id('q_username').set("")
                 click_button 'Search'
-                expect(page).to have_content "1 result for room"
+                expect(page).to have_content "2 results for room"
             end
             it '複合検索で該当の投稿がヒットすること' do
                 visit posts_path
