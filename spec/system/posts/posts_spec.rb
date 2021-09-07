@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe '投稿', type: :system do
-
     # posts/index
     describe '投稿一覧' do
         let!(:user) { create(:user) }
@@ -31,7 +30,6 @@ RSpec.describe '投稿', type: :system do
             end
         end
     end
-    
     # posts/create
     describe 'ポスト投稿' do
         it '投稿できること' do
@@ -46,7 +44,6 @@ RSpec.describe '投稿', type: :system do
             expect(page).to have_content 'Lorem ipsum'
         end
     end
-
     # posts/edit
     describe 'ポスト更新' do
         let!(:user) { create(:user) }
@@ -80,7 +77,6 @@ RSpec.describe '投稿', type: :system do
             expect(page).to have_content 'This is the edited post!'
         end
     end
-
     # posts/delete
     describe 'ポスト削除' do
         let!(:user) { create(:user) }
@@ -111,7 +107,6 @@ RSpec.describe '投稿', type: :system do
             expect(page).not_to have_content post_by_user.body
         end
     end
-
     # posts/show
     describe 'ポスト詳細' do
         let(:user) { create(:user) }
@@ -124,6 +119,54 @@ RSpec.describe '投稿', type: :system do
         it '投稿の詳細画面が閲覧できること' do
             visit post_path(post_by_user)
             expect(current_path).to eq post_path(post_by_user)
+        end
+    end
+
+    describe 'ポスト検索' do
+        context '検索で投稿がヒットする場合' do
+                let(:user1) { create(:user, username: "michael") }
+                let(:user2) { create(:user, username: "lana") }
+                let(:user3) { create(:user, username: "archer") }
+                let!(:post1_by_user1) { create(:post, body: "This post really ties the room together.", user: user1)}
+                let!(:post2_by_user2) { create(:post, body: "Oh, is that what you want? Because that's how you get ants!", user: user2)}
+                let!(:post3_by_user3) { create(:post, body: "I'm sorry. Your words made sense, but your sarcastic tone did not.", user: user3)}
+                before do
+                    user2.comments.create(body: "Does it really tie together??", post: post1_by_user1)
+                end
+            it '単一検索で該当の投稿がヒットすること' do
+                visit posts_path
+                find_by_id('q_body').set("room")
+                find_by_id('q_comment_body').set("")
+                find_by_id('q_username').set("")
+                click_button 'Search'
+                expect(page).to have_content "1 result for room"
+            end
+            it '複合検索で該当の投稿がヒットすること' do
+                visit posts_path
+                find_by_id('q_body').set("together")
+                find_by_id('q_comment_body').set("tie")
+                find_by_id('q_username').set("michael")
+                click_button 'Search'
+                expect(page).to have_content "1 result for together tie michael"
+            end
+        end
+        context '検索で投稿がヒットしない場合' do
+            it '検索によって該当する記事がないこと' do
+                visit posts_path
+                find_by_id('q_body').set("Lorem")
+                find_by_id('q_comment_body').set("ipsum")
+                find_by_id('q_username').set("dolor")
+                click_button 'Search'
+                expect(page).to have_content "0 results for Lorem ipsum dolor"
+            end
+            it '何も入力しないで検索した時にエラーメッセージが表示されること' do
+                visit posts_path
+                find_by_id('q_body').set("")
+                find_by_id('q_comment_body').set("")
+                find_by_id('q_username').set("")
+                click_button 'Search'
+                expect(page).to have_content "検索語を入力してください"
+            end
         end
     end
 
