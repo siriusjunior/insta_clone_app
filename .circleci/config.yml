@@ -22,20 +22,20 @@ jobs: #1つ以上のjob設定
             gem install bundler:2.0.2
             bundle -v
       - restore_chache: #キャッシュがsave_cacheにより存在すればキャッシュをリストアする、ビルドタイム向上
-        keys: #リストアするキャッシュの複数指定
-          - rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
-          - rails-demo-bundle-v2-
+          keys: #リストアするキャッシュの複数指定
+            - rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
+            - rails-demo-bundle-v2-
       - run: 
           name: bundle install #指定パスの依存関係がgemにインストールされてるか、CIオプションでgemインストール
           command: bundle check --path vendor/bundle || bundle install --development
       - save_cache: #依存関係のキャッシュを指定パスに保存
-        key: rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
-        paths:
-          - vendor/bundle
+          key: rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
       - restore_chache: #キャッシュがsave_cacheにより存在すればキャッシュを保持する、Yarnを使用する場合に必要
-        keys: #リストアするキャッシュの複数指定
-          - rails-demo-yarn-{{ checksum "yarn.lock" }}
-          - rails-demo-yarn-
+          keys: #リストアするキャッシュの複数指定
+            - rails-demo-yarn-{{ checksum "yarn.lock" }}
+            - rails-demo-yarn-
       - run:
           name: yarn install #Yarnパッケージのキャッシュ化
           command: yarn install --cache-folder ~/.cache/yarn
@@ -44,23 +44,23 @@ jobs: #1つ以上のjob設定
           paths:
             - ~/.cache/yarn
       - run:
-        name: wait database #依存関係の待機(MySQLの場合)
-        command: dockerize -wait tcp://localhost:3306 -timeout 1m
+          name: wait database #依存関係の待機(MySQLの場合)
+          command: dockerize -wait tcp://localhost:3306 -timeout 1m
       - run:
-        name: setup database.yml #CircleCiで構築されるDBを反映、元ファイルはmvしないで保持
-        command: cp config/database.ci.yml config/database.yml
+          name: setup database.yml #CircleCiで構築されるDBを反映、元ファイルはmvしないで保持
+          command: cp config/database.ci.yml config/database.yml
       - run:
-        name: setup database #スキーマファイルからテーブル作成、--traceでfull_traceチェック
-        command: bin/rails db:schema:load --trace
+          name: setup database #スキーマファイルからテーブル作成、--traceでfull_traceチェック
+          command: bin/rails db:schema:load --trace
       - run:
-        name: execute rspec #Rspecを実行
-        command: | #RspecJunitFormatterのgemが必要でrspec結果をCIが読めるようにする、結果はrspec.xmlでupload、--formatで各テスト結果を1文字表示、CIにrspecファイルをglobしファイル名でrspecを並行させる--split-by=timings
-          bundle exec rspec \
-            --format RspecJunitFormatter \
-                            --out test_results/rspec.xml \
-                            --format progress \
-                            $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+          name: execute rspec #Rspecを実行
+          command: | #RspecJunitFormatterのgemが必要でrspec結果をCIが読めるようにする、結果はrspec.xmlでupload、--formatで各テスト結果を1文字表示、CIにrspecファイルをglobしファイル名でrspecを並行させる--split-by=timings
+            bundle exec rspec \
+              --format RspecJunitFormatter \
+              --out test_results/rspec.xml \
+              --format progress \
+              $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
       - store_test_results: #ビルドのテスト結果をアップロード
-        path: test_results
+          path: test_results
       - store_artifacts: #spec失敗時のスクショを保存
-        path: tmp/screenshots/
+          path: tmp/screenshots/
