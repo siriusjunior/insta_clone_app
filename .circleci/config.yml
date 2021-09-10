@@ -13,6 +13,9 @@ jobs: #1つ以上のjob設定
           BUNDLE_PATH: vendor/bundle #vendor/bundle 依存関係のファイルはbundle_installを後でrun
           RAILS_ENV: test
       - image: redis-latest
+        auth:
+          username: siriusjunior  # can specify string literal values
+          password: $DOCKERHUB_PASSWORD  # or project environment variable reference
       - image: circleci/mysql:5.7 #MySQLのバージョンを確認し、データベースイメージ指定
         environment: #データベースの環境変数設定
           MYSQL_USER: root
