@@ -3,7 +3,7 @@ jobs: #1つ以上のjob設定
   build: #jobが1つの場合はbuild
     parallelism: 1 #同時にCIを走らせる数、無料版なので1
     docker: #CI環境でDokerを利用
-      - image: circleci/ruby:2.6.4-node-browsers #このイメージをstepsの実行時のプライマリコンテナとして使用
+      - image: cimg/ruby:2.6.8-node-browsers #このイメージをstepsの実行時のプライマリコンテナとして使用
         auth:
           username: siriusjunior  # can specify string literal values
           password: $DOCKERHUB_PASSWORD  # or project environment variable reference
