@@ -4,6 +4,9 @@ jobs: #1つ以上のjob設定
     parallelism: 1 #同時にCIを走らせる数、無料版なので1
     docker: #CI環境でDokerを利用
       - image: circleci/ruby:2.6.4-node-browsers #このイメージをstepsの実行時のプライマリコンテナとして使用
+        auth:
+          username: siriusjunior  # can specify string literal values
+          password: $DOCKERHUB_PASSWORD  # or project environment variable reference
         environment: #コンテナの環境変数設定
           BUNDLE_JOBS: 3
           BUNDLE_RETRY: 3
@@ -19,7 +22,7 @@ jobs: #1つ以上のjob設定
       - run: #コマンドの実行
           name: setup bundler #任意のrunの名前、バージョンを指定してBundlerをインストールするrun
           command: |
-            gem install bundler:2.0.2
+            gem install bundler:2.2.24
             bundle -v
       - restore_cache: #キャッシュがsave_cacheにより存在すればキャッシュをリストアする、ビルドタイム向上
           keys: #リストアするキャッシュの複数指定
