@@ -62,7 +62,7 @@ jobs: #1つ以上のjob設定
           name: setup database #スキーマファイルからテーブル作成、--traceでfull_traceチェック
           command: bin/rails db:schema:load --trace
       - run:
-          name: Rubocop
+          name: Rubocop #rubocopの起動
           command: bundle exec rubocop
       - run:
           name: execute rspec #Rspecを実行
