@@ -34,7 +34,7 @@ jobs: #1つ以上のjob設定
             - rails-demo-bundle-v2-
       - run: 
           name: bundle install #指定パスの依存関係がgemにインストールされてるか、CIオプションでgemインストール
-          command: bundle config set --local path 'vendor/bundle' || bundle install --deployment
+          command: bundle config set --local path 'vendor/bundle' || bundle install --deployment || gem install nokogiri --platform=ruby
       - save_cache: #依存関係のキャッシュを指定パスに保存
           key: rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
           paths:
