@@ -12,7 +12,7 @@ jobs: #1つ以上のjob設定
           BUNDLE_RETRY: 3
           BUNDLE_PATH: vendor/bundle #vendor/bundle 依存関係のファイルはbundle_installを後でrun
           RAILS_ENV: test
-      - image: redis-latest
+      - image: redis:latest
         auth:
           username: siriusjunior  # can specify string literal values
           password: $DOCKERHUB_PASSWORD  # or project environment variable reference
