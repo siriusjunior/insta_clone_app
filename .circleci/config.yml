@@ -28,9 +28,17 @@ jobs: #1つ以上のjob設定
           command: |
             gem install bundler:2.2.24
             bundle -v
+      - restore_cache: #キャッシュがsave_cacheにより存在すればキャッシュをリストアする、ビルドタイム向上
+          keys: #リストアするキャッシュの複数指定
+            - rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
+            - rails-demo-bundle-v2-
       - run: 
           name: bundle install #指定パスの依存関係がgemにインストールされてるか、CIオプションでgemインストール
-          command: bundle config set --local path 'vendor/bundle' || bundle install --deployment || bundle update
+          command: bundle config set --local path 'vendor/bundle' || bundle install --deployment
+      - save_cache: #依存関係のキャッシュを指定パスに保存
+          key: rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
       - restore_cache: #キャッシュがsave_cacheにより存在すればキャッシュを保持する、Yarnを使用する場合に必要
           keys: #リストアするキャッシュの複数指定
             - rails-demo-yarn-{{ checksum "yarn.lock" }}
@@ -45,6 +53,9 @@ jobs: #1つ以上のjob設定
       - run:
           name: wait database #依存関係の待機(MySQLの場合)
           command: dockerize -wait tcp://localhost:3306 -timeout 1m
+      - run: 
+          name: bundle install #指定パスの依存関係がgemにインストールされてるか、CIオプションでgemインストール
+          command: bundle install --deployment
       - run:
           name: setup database.yml #CircleCiで構築されるDBを反映、元ファイルはmvしないで保持
           command: cp config/database.ci.yml config/database.yml
