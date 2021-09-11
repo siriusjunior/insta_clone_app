@@ -1,0 +1,77 @@
+version: 2 #CircleCI2.0の使用
+jobs: #1つ以上のjob設定
+  build: #jobが1つの場合はbuild
+    parallelism: 1 #同時にCIを走らせる数、無料版なので1
+    docker: #CI環境でDokerを利用
+      - image: circleci/ruby:2.6.4-node-browsers #このイメージをstepsの実行時のプライマリコンテナとして使用
+        auth:
+          username: siriusjunior  # can specify string literal values
+          password: $DOCKERHUB_PASSWORD  # or project environment variable reference
+        environment: #コンテナの環境変数設定
+          BUNDLE_JOBS: 3
+          BUNDLE_RETRY: 3
+          BUNDLE_PATH: vendor/bundle #vendor/bundle 依存関係のファイルはbundle_installを後でrun
+          RAILS_ENV: test
+      - image: redis:latest
+        auth:
+          username: siriusjunior  # can specify string literal values
+          password: $DOCKERHUB_PASSWORD  # or project environment variable reference
+      - image: circleci/mysql:5.7 #MySQLのバージョンを確認し、データベースイメージ指定
+        environment: #データベースの環境変数設定
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes #[MYSQL_ROOT_PASSWORD]のnull_valueの有効化。
+          MYSQL_ROOT_PASSWORD: '' #null_valueで設定
+    steps: #CIで動作するコマンドを設定する必須キー
+      - checkout #作業ディレクトリにGitリポジトリをコピー
+      - run: #コマンドの実行
+          name: setup bundler #任意のrunの名前、バージョンを指定してBundlerをインストールする
+          command: |
+            gem install bundler:2.2.24
+            bundle -v
+      - restore_cache: #キャッシュがsave_cacheにより存在すればキャッシュをリストアする、ビルドタイム向上
+          keys: #リストアするキャッシュの複数指定
+            - rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
+            - rails-demo-bundle-v2-
+      - run: 
+          name: bundle install
+          command: | #パスの指定と依存のインストール
+            bundle config set --local path 'vendor/bundle'
+            bundle install
+      - save_cache: #依存関係のキャッシュを指定パスに保存
+          key: rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+      - restore_cache: #キャッシュがsave_cacheにより存在すればキャッシュを保持する、Yarnを使用する場合に必要
+          keys: #リストアするキャッシュの複数指定
+            - rails-demo-yarn-{{ checksum "yarn.lock" }}
+            - rails-demo-yarn-
+      - run:
+          name: yarn install #Yarnパッケージのキャッシュ化
+          command: yarn install --cache-folder ~/.cache/yarn
+      - save_cache: #Yarnキャッシュの保存
+          key: rails-demo-yarn-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - run:
+          name: wait database #依存関係の待機(MySQLの場合)
+          command: dockerize -wait tcp://localhost:3306 -timeout 1m
+      - run:
+          name: setup database.yml #CircleCiで構築されるDBを反映、元ファイルはmvしないで保持
+          command: cp config/database.ci.yml config/database.yml
+      - run:
+          name: setup database #スキーマファイルからテーブル作成、--traceでfull_traceチェック
+          command: bin/rails db:schema:load --trace
+      - run:
+          name: Rubocop #rubocopの起動、Lintチェック
+          command: bundle exec rubocop --lint
+      - run:
+          name: execute rspec #Rspecを実行
+          command: | #RspecJunitFormatterのgemが必要でrspec結果をCIが読めるようにする、結果はrspec.xmlでupload、--formatで各テスト結果を1文字表示、CIにrspecファイルをglobしファイル名でrspecを並行させる--split-by=timings
+            bundle exec rspec \
+              --format RspecJunitFormatter \
+              --out test_results/rspec.xml \
+              --format progress \
+              $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+      - store_test_results: #ビルドのテスト結果をアップロード
+          path: test_results
+      - store_artifacts: #spec失敗時のスクショを保存
+          path: tmp/screenshots/
