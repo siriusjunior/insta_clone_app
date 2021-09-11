@@ -18,9 +18,8 @@ jobs: #1つ以上のjob設定
           password: $DOCKERHUB_PASSWORD  # or project environment variable reference
       - image: circleci/mysql:5.7 #MySQLのバージョンを確認し、データベースイメージ指定
         environment: #データベースの環境変数設定
-          MYSQL_ROOT_PASSWORD: 6989
+          MYSQL_ROOT_PASSWORD:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_RANDOM_ROOT_PASSWORD: yes
     steps: #CIで動作するコマンドを設定する必須キー
       - checkout #作業ディレクトリにGitリポジトリをコピー
       - run: #コマンドの実行
