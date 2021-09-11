@@ -18,12 +18,12 @@ jobs: #1つ以上のjob設定
           password: $DOCKERHUB_PASSWORD  # or project environment variable reference
       - image: circleci/mysql:5.7 #MySQLのバージョンを確認し、データベースイメージ指定
         environment: #データベースの環境変数設定
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_ROOT_PASSWORD: ''
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes #[MYSQL_ROOT_PASSWORD]のnull_valueの有効化。
+          MYSQL_ROOT_PASSWORD: '' #null_valueで設定
     steps: #CIで動作するコマンドを設定する必須キー
       - checkout #作業ディレクトリにGitリポジトリをコピー
       - run: #コマンドの実行
-          name: setup bundler #任意のrunの名前、バージョンを指定してBundlerをインストールするrun
+          name: setup bundler #任意のrunの名前、バージョンを指定してBundlerをインストールする
           command: |
             gem install bundler:2.2.24
             bundle -v
@@ -61,6 +61,9 @@ jobs: #1つ以上のjob設定
       - run:
           name: setup database #スキーマファイルからテーブル作成、--traceでfull_traceチェック
           command: bin/rails db:schema:load --trace
+      - run:
+          name: Rubocop
+          command: bundle exec rubocop
       - run:
           name: execute rspec #Rspecを実行
           command: | #RspecJunitFormatterのgemが必要でrspec結果をCIが読めるようにする、結果はrspec.xmlでupload、--formatで各テスト結果を1文字表示、CIにrspecファイルをglobしファイル名でrspecを並行させる--split-by=timings
