@@ -18,14 +18,15 @@ jobs: #1つ以上のjob設定
           password: $DOCKERHUB_PASSWORD  # or project environment variable reference
       - image: circleci/mysql:5.7 #MySQLのバージョンを確認し、データベースイメージ指定
         environment: #データベースの環境変数設定
-          MYSQL_USER: root
+          MYSQL_ROOT_PASSWORD: rootpw
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_RANDOM_ROOT_PASSWORD: yes
     steps: #CIで動作するコマンドを設定する必須キー
       - checkout #作業ディレクトリにGitリポジトリをコピー
       - run: #コマンドの実行
           name: setup bundler #任意のrunの名前、バージョンを指定してBundlerをインストールするrun
           command: |
-            gem install bundler:2.0.2
+            gem install bundler:2.2.24
             bundle -v
       - restore_cache: #キャッシュがsave_cacheにより存在すればキャッシュをリストアする、ビルドタイム向上
           keys: #リストアするキャッシュの複数指定
