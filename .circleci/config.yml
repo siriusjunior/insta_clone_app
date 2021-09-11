@@ -58,8 +58,8 @@ jobs: #1つ以上のjob設定
           command: cp config/database.ci.yml config/database.yml
       - run:
           name: setup database #スキーマファイルからテーブル作成、--traceでfull_traceチェック
-          command: bundle exec rails db:create
-          command: bundle exec rails db:schema:load
+          command: bundle exec rake db:create
+          command: bundle exec rake db:schema:load
       - run:
           name: execute rspec #Rspecを実行
           command: | #RspecJunitFormatterのgemが必要でrspec結果をCIが読めるようにする、結果はrspec.xmlでupload、--formatで各テスト結果を1文字表示、CIにrspecファイルをglobしファイル名でrspecを並行させる--split-by=timings
