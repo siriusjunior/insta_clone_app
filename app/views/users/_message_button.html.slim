@@ -1,0 +1,3 @@
+= form_with url: chatrooms_path, class: 'message-button', local: true do |f|
+    = f.hidden_field 'chatroom[user_ids][]', value: user.id 
+    = f.submit 'Message', class: 'btn btn-warning btn-raised'

@@ -16,6 +16,10 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    # @chatroom_users =  [@user] + [current_user]
+    # user_ids = @chatroom_users.map(&:id).sort # [3,5,7,9]
+    # name = user_ids.join(':').to_s # "3:5:7:9"
+    # @chatroom = @user.chatrooms.find_by(name: name)
   end
 
   def index

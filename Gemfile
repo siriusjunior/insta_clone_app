@@ -21,6 +21,7 @@ gem 'kaminari'
 gem 'config'
 gem 'sidekiq'
 gem 'sinatra'
+gem 'draper'
 gem 'meta-tags'
 #　railsでslimを利用するためのgem
 gem 'html2slim'

@@ -12,3 +12,10 @@
                     .profile.text-center.mb-3 
                         = @user.username
                     .text-center
+                        = render 'follow_area', user: @user
+                    .text-center
+                        - if current_user && current_user&.id != @user.id #&& current_user.following?(@user)
+                            = render 'message_button', user: @user
+                    hr
+                    .row
+                        = render partial: 'posts/thumbnail_post', collection: @user.posts
