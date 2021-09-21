@@ -3,6 +3,6 @@
     = f.label :body
     = f.text_field :body, class: 'form-control mb-3 input-message-body', id: 'message-form', required: true
     - if message.new_record?
-        = f.submit '投稿', class: 'btn btn-primary btn-raised'
+        = f.submit 'POST', class: 'btn btn-primary btn-raised'
     - else
-        = f.submit '更新', class: 'btn btn-primary btn-raised'
+        = f.submit 'EDIT', class: 'btn btn-primary btn-raised'

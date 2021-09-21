@@ -7,6 +7,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       auto_login(@user)
+      cookies.signed['user_id'] = current_user.id
       redirect_to login_path, success: 'ユーザーを作成しました'
     else
       flash.now[:danger] = 'ユーザーの作成に失敗しました'

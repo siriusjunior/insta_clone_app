@@ -8,7 +8,8 @@
                 .card-body 
                     ul.list-unstyled#message-box 
                         = render @chatroom.messages
-                    = render 'messages/form', chatroom: @chatroom, message: @message ||= Message.new 
+                    div.list-unstyled#form data-form-user-id="#{current_user.id}"
+                        = render 'messages/form', chatroom: @chatroom, message: @message ||= Message.new 
 #chatroom-users.modal.fade tabindex="-1"
     .modal-dialog 
         .modal-content 

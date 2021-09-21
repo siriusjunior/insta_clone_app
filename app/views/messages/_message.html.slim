@@ -1,5 +1,5 @@
 li.media.mb-3.border-bottom.p-2 id="message-#{message.id}" data-sender-id="#{message.user.id}"
-    div 
+    div
         div 
             = link_to message.user.username, user_path(message.user)
         = image_tag message.user.avatar_url, class: 'mr-3 rounded-circle', size: '50x50'
