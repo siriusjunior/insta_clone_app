@@ -1,0 +1,40 @@
+.container 
+    .text-center.mb-3
+        = link_to 'チャットルームを作る', '#', class: 'btn btn-primary btn-raised', data: { toggle: 'modal', target: '#create-chatroom-modal' }
+    .row 
+        .col-md-6.col-12.offset-md-3.mb-3
+            .card 
+                .card-body 
+                    = render(@chatrooms) || 'ルームがありません'
+        .col-md-6.col-12.offset-md-3
+            = paginate @chatrooms
+    #create-chatroom-modal.modal.fade tabindex="-1"
+        = form_with model: Chatroom.new, local: true do |f|
+            - if current_user.following.present?
+                .modal-dialog 
+                    .modal-content 
+                        .modal-header 
+                            h5.modal-title 誰とチャットルームを作りますか？
+                            button.close aria-label="Close" data-dismiss="modal" type="button"
+                                span aria-hidden="true" ×
+                        .modal-body 
+                            ul.list-unstyled 
+
+                                = f.collection_check_boxes :user_ids, current_user.following, :id, :username do |b|
+                                    .mb-3
+                                        = b.label do 
+                                            = b.check_box class: 'mr-1'
+                                            = image_tag b.object.avatar_url, size: '40x40', class: 'rounded-circle mr-1'
+                                            = b.text 
+                        .modal-footer.text-center 
+                            = f.submit '作成', class: 'btn btn-primary btn-raised'
+            - else 
+                .modal-dialog 
+                    .modal-content 
+                        .modal-header 
+                            h5.modal-title フォロワーがいません
+                            button.close aria-label="Close" data-dismiss="modal" type="button"
+                                span aria-hidden="true" ×
+                        .modal-body 
+                            h5.h5 おすすめユーザー
+                            = link_to 'ユーザー一覧', users_path, class: 'btn btn-primary btn-raised'

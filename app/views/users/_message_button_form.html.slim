@@ -1,0 +1,4 @@
+- if current_user && current_user&.id != user.id
+    div id="message-button-form-#{user.id}"
+    - if current_user.following?(user) #|| @chatroom.present?
+        = render 'message_button', user: user

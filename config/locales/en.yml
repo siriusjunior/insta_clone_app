@@ -4,6 +4,7 @@ ja:
       user: 'user'
       post: 'post'
       comment: 'comment'
+      message: 'message'
     attributes:
       user:
         email: 'email'
@@ -18,6 +19,8 @@ ja:
         body: 'comment'
         user_id: 'user'
         post_id: 'post'
+      message:
+        body: 'message'
 
   attributes:
     created_at: 'created'

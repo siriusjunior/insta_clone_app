@@ -4,6 +4,7 @@ ja:
       user: 'ユーザー'
       post: '投稿'
       comment: 'コメント'
+      message: 'メッセージ'
     attributes:
       user:
         email: 'メールアドレス'
@@ -21,6 +22,8 @@ ja:
         body: 'コメント'
         user_id: 'ユーザー'
         post_id: '投稿'
+      message:
+        body: 'メッセージ'
 
   attributes:
     created_at: '作成日時'

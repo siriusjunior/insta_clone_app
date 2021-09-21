@@ -16,6 +16,9 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-white
                 = link_to new_post_path, class: 'nav-link' do
                     = icon 'far', 'image', class: 'fa-lg'
             li.nav-item
+                = link_to chatrooms_path, class: 'nav-link' do
+                    = icon 'far', 'comments', class: 'fa-lg'
+            li.nav-item
                 = link_to user_path(current_user), class: 'nav-link' do
                     = icon 'far', 'user', class: 'fa-lg'
             li.nav-item

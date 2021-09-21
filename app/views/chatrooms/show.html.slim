@@ -1,0 +1,22 @@
+.container 
+    .row 
+        .col-sm-8.offset-sm-2 
+            .card#chatroom data-chatroom-id="#{@chatroom.id}" data-current-user-id="#{current_user.id}"
+                .card-header 
+                    h2 Chatroom 
+                    = link_to 'Members', '#', class: 'btn btn-primary btn-raised', data: { toggle: 'modal', target: '#chatroom-users' }
+                .card-body 
+                    ul.list-unstyled#message-box 
+                        = render @chatroom.messages
+                    div.list-unstyled#form data-form-user-id="#{current_user.id}"
+                        = render 'messages/form', chatroom: @chatroom, message: @message ||= Message.new 
+#chatroom-users.modal.fade tabindex="-1"
+    .modal-dialog 
+        .modal-content 
+            .modal-header 
+                h5.modal-title Members
+                button.close aria-label="Close" data-dismiss="modal" type="button"
+                    span aria-hidden="true" ×
+            .modal-body 
+                = render @chatroom.users
+            .modal-footer.text-center
