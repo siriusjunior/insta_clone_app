@@ -1,4 +1,5 @@
 class Mypage::CreditcardsController < Mypage::BaseController
+  before_action :set_payjp_sk, only: %i[new create edit update]
   def new
     redirect_to edit_mypage_creditcard_path if current_user.customer_id.present?
   end
@@ -23,5 +24,12 @@ class Mypage::CreditcardsController < Mypage::BaseController
   rescue Payjp::PayjpError => e
     redirect_to edit_mypage_creditcard_path, danger: e.message
   end
+
+  private
+
+    # クレカ処理でskも求められた
+    def set_payjp_sk
+      Payjp.api_key = Settings.payjp.dig(:sk)
+    end
 
 end

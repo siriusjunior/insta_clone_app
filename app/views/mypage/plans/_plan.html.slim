@@ -7,7 +7,7 @@
             - if current_user.about_to_cancel?(plan)
                 = link_to '解約済み', '#', class: 'btn btn-outline-primary', disabled: true 
                 div 
-                    span.small = "#{ l current_user.latest_contract.current_period_end, format: :short }まではご利用できます。"
+                    span.small = "#{ l current_user.latest_contract.current_period_end, format: '%Y/%m/%d' }まではご利用できます。"
             / 当該プランを契約中であり、かつキャンセルしていない場合
             - elsif current_user.subscripting_to?(plan)
                 = link_to '解約', mypage_contract_contract_cancellation_path, class: 'btn btn-outline-primary', method: :post
@@ -17,7 +17,7 @@
                 - if current_user.subscripting?
                     = link_to '契約', '#', class: 'btn btn-outline-primary', disabled: true 
                     div 
-                        span.small = "現在契約中のプランが#{ l current_user.latest_contract.current_period_end, format: :short }まで有効です。"
+                        span.small = "現在契約中のプランが#{ l current_user.latest_contract.current_period_end, format: '%Y/%m/%d' }まで有効です。"
                 / いずれのプランにも契約していない場合
                 - else
                     = link_to '契約', mypage_contract_path(code: plan.code), class: 'btn btn-primary btn-raised', method: :post

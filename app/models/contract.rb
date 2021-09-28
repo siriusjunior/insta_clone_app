@@ -38,7 +38,7 @@ class Contract < ApplicationRecord
   end
 
   # 任意のcontractに対してcontract_cancellationレコードを付加する
-  def cancel!(reason)
+  def cancel!(reason:)
     create_contract_cancellation!(reason: reason)
   end
 end

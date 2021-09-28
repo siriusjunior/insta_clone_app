@@ -23,14 +23,14 @@ module PayjpCustomer
     end
 
     # 解約する、最新のcontractに対してcontract_cancellationレコードを付加する
-    def stop_subscript!(reason: :by_user_cancelled)
+    def stop_subscript!(reason: :by_user_canceled)
         latest_contract.cancel!(reason: reason)
     end
 
     # 当該プランを契約中であり、かつキャンセルしているか
     def about_to_cancel?(plan)
         subscripting_to?(plan) &&
-            latest_contract.contact_cancellation.present?
+            latest_contract.contract_cancellation.present?
     end
 
     # プラン問わず契約中か、最新契約の最終支払いが期間内か
