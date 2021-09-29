@@ -1,0 +1,5 @@
+tr 
+    td = l payment.created_at.to_date, farmat: '%Y/%m/%d'
+    td = payment.contract.plan.name
+    td = payment.decorate.contract_valid_period
+    td = number_to_currency(payment.contract.plan.price, unit: "¥", format: '%u%n', precision: 0)
