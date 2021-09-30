@@ -1,8 +1,10 @@
 = form_with model: [chatroom, message], remote: true do |f|
-    = render 'shared/error_messages', object: message 
+    / remote:trueでjs処理がされるのでそれに合わせてvalidateによるerror_messagesに対応
+    .js-message-errors
+    / = render 'shared/error_messages', object: message 
     = f.label :body
     = f.text_field :body, class: 'form-control mb-3 input-message-body', id: 'message-form', required: true
     - if message.new_record?
-        = f.submit 'POST', class: 'btn btn-primary btn-raised'
+        = f.submit 'POST', class: "btn btn-primary btn-raised #{ 'disabled' if current_user.cannot_message? }", id: 'post-btn'
     - else
         = f.submit 'EDIT', class: 'btn btn-primary btn-raised'

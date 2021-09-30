@@ -45,6 +45,20 @@ module PayjpCustomer
             latest_contract.plan.code == plan.code
     end
 
+    # ベーシックプランが契約中か
+    def subscripting_basic_plan?
+        subscripting_to?(Plan.find_by!(code: '0001'))
+    end
+    
+    # プレミアムプランが契約中か
+    def subscripting_premium_plan?
+        subscripting_to?(Plan.find_by!(code: '0002'))
+    end
+
+    def cannot_message?
+        subscripting_basic_plan? && messages.where(created_at: latest_contract.current_period_start...latest_contract.current_period_end).size >= 20 || !subscripting_basic_plan? && messages.size >= 9
+    end
+
     # userモデルとの連携準備
     def register_creditcard!(token:)
         customer = add_customer!(token: token)

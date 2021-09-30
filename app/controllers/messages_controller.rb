@@ -1,16 +1,20 @@
 class MessagesController < ApplicationController
     before_action :require_login, only: %i[create]
+
     def create
         @message = current_user.messages.build(message_params)
-        if @message.save
-            ActionCable.server.broadcast(
-                "chatroom_#{ @message.chatroom_id }",
-                type: :create, html: (render_to_string partial: 'message', locals: { message: @message }, layout: false), message: @message.as_json
-            )
-            head :ok
-        else
-            head :bad_request
-        end
+            respond_to do |format|
+                if @message.save
+                    ActionCable.server.broadcast(
+                        "chatroom_#{ @message.chatroom_id }",
+                        type: :create, html: (render_to_string partial: 'message', locals: { message: @message }, layout: false), message: @message.as_json
+                    )
+                    head :ok
+                else
+                    format.js { render :errors } # errors.js.erbの呼び出し
+                    # format.html { render chatrooms/show }
+                end
+            end
     end
 
     def edit
