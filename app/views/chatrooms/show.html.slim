@@ -9,7 +9,8 @@
                     ul.list-unstyled#message-box 
                         = render @chatroom.messages
                     div.list-unstyled#form data-form-user-id="#{current_user.id}"
-                        = render 'messages/form', chatroom: @chatroom, message: @message ||= Message.new 
+                        #message-container
+                            = render 'messages/form', chatroom: @chatroom, message: @message ||= Message.new 
 #chatroom-users.modal.fade tabindex="-1"
     .modal-dialog 
         .modal-content 

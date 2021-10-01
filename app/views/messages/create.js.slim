@@ -1,1 +1,2 @@
-/ document.getElementById('message_form').value = ''
+| $("#message-container").html("<div>hogehoge</div>");
+/ | $("#message-container").replaceWith("#{ j render('form', chatroom: @chatroom, message: Message.new) }");

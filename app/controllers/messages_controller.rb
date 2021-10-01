@@ -8,11 +8,11 @@ class MessagesController < ApplicationController
                     ActionCable.server.broadcast(
                         "chatroom_#{ @message.chatroom_id }",
                         type: :create, html: (render_to_string partial: 'message', locals: { message: @message }, layout: false), message: @message.as_json
-                    )
+                    )and return
+                    format.js { render :create }
                     head :ok
                 else
                     format.js { render :errors } # errors.js.erbの呼び出し
-                    # format.html { render chatrooms/show }
                 end
             end
     end

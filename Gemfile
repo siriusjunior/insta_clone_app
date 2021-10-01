@@ -24,6 +24,7 @@ gem 'sinatra'
 gem 'draper'
 gem 'meta-tags'
 gem 'payjp'
+gem 'whenever'
 #　railsでslimを利用するためのgem
 gem 'html2slim'
 #　html.erbをhtmle.slimに変換するためのgem
