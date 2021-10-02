@@ -3,17 +3,16 @@ class MessagesController < ApplicationController
 
     def create
         @message = current_user.messages.build(message_params)
-            respond_to do |format|
-                if @message.save
-                    ActionCable.server.broadcast(
-                        "chatroom_#{ @message.chatroom_id }",
-                        type: :create, html: (render_to_string partial: 'message', locals: { message: @message }, layout: false), message: @message.as_json
-                    )and return
-                    format.js { render :create }
-                    head :ok
-                else
-                    format.js { render :errors } # errors.js.erbの呼び出し
+            if @message.save
+                ActionCable.server.broadcast(
+                    "chatroom_#{ @message.chatroom_id }",
+                    type: :create, html: (render_to_string partial: 'message', locals: { message: @message }, layout: false), message: @message.as_json
+                )
+                if current_user.cannot_message? 
+                    render :create, content_type: "text/javascript" 
                 end
+            else
+                render :errors  # errors.js.erbの呼び出し
             end
     end
 
@@ -41,7 +40,9 @@ class MessagesController < ApplicationController
             "chatroom_#{@message.chatroom_id}",
             type: :delete, html: (render_to_string partial: 'message', locals: { message: @message }, layout: false), message: @message.as_json
         )
-        head :ok
+        if !current_user.cannot_message? 
+            render :destroy, content_type: "text/javascript" 
+        end
     end
 
     private

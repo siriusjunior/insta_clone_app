@@ -7,7 +7,7 @@ rails_env = ENV['RAILS_ENV'] || :development
 set :environment, rails_env
 
 # cronのログ出力ファイルを作成
-set :output, "Rails.root"/log/cron.log"
+set :output, "#{ Rails.root }/log/cron.log"
 
 every 1.day, at: '03:00 am' do
     rake 'subscription:update'
