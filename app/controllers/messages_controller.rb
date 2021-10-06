@@ -10,6 +10,9 @@ class MessagesController < ApplicationController
                 )
                 if current_user.cannot_message? 
                     render :create, content_type: "text/javascript" 
+                    else
+                    # 投稿後に!cannot_messageに該当しvalidationエラーを削除
+                    render :remove_alert, content_type: "text/javascript"
                 end
             else
                 render :errors  # errors.js.erbの呼び出し

@@ -36,8 +36,8 @@ class Message < ApplicationRecord
               user.messages
                   .where(created_at: user.latest_contract.current_period_start...user.latest_contract.current_period_end)
                   .size < 20
-    # プランを契約していないのであれば、期間中のメッセージ数が指定数未満であれば処理中断、達した時点でerrors.add発火
-    return if user.messages.size < 10
+    # プランが未契約であり、期間中のメッセージ数が指定数未満であれば処理中断、達した時点でerrors.add発火
+    return if user.messages.size < 11
 
     errors.add(:base, '今月のメッセージ可能回数をオーバーしました。')
   end

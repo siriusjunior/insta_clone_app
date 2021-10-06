@@ -15,6 +15,7 @@ module PayjpCustomer
     def subscript!(plan)
         contract = contracts.create!(plan: plan)
         pay!
+        contract
     end
 
     # 契約をもとにした支払い処理とpaymentsレコードの作成
@@ -62,13 +63,14 @@ module PayjpCustomer
     end
 
     def cannot_message?
-        subscripting_basic_plan? && messages.where(created_at: latest_contract.current_period_start...latest_contract.current_period_end).size >= 20 || !subscripting_basic_plan? && messages.size >= 9
+        subscripting_basic_plan? && messages.where(created_at: latest_contract.current_period_start...latest_contract.current_period_end).size >= 20 || !subscripting_premium_plan? && !subscripting_basic_plan? && messages.size >= 10
     end
 
     # userモデルとの連携準備
     def register_creditcard!(token:)
         customer = add_customer!(token: token)
         #Payjpで登録したインスタンスidをuserモデルに反映、customerの抜出しで使用
+        # テストではcustomerがmockにあたる
         update!(customer_id: customer.id)
     end
 

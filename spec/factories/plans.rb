@@ -16,5 +16,19 @@ FactoryBot.define do
     name { "MyString" }
     price { 1 }
     interval { 1 }
+
+    trait :basic_plan do
+      code { '0001' }
+      name { 'ベーシックプラン' }
+      price { 480 }
+      interval { 1 }
+    end
+
+    trait :premium_plan do
+      code { '0002' }
+      name { 'プレミアムプラン' }
+      price { 980 }
+      interval { 1 }
+    end
   end
 end
