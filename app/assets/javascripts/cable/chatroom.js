@@ -18,10 +18,7 @@ $(function(){
                         if( $(`#message-${data.message.id}`).data("senderId") != currentUserId ){
                             // 送信部のidとルーム内のユーザidの比較で編集・削除ボタンを非表示にする
                             $(`#message-${data.message.id}`).find('.crud-area').hide()
-                        }
-                        
-                        // ここからメッセージ削除のロジックを組む。受信部データにある送信者IDとフォームID(current_user.id)で一致したsubscriberのフォームは削除
-                        if( $(`#message-${data.message.id}`).data("senderId") == formUserId){
+                        }else{
                             $('.input-message-body').val('');
                         }
                         break;

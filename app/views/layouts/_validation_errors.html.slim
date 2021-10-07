@@ -1,0 +1,6 @@
+- if message.errors.full_messages.present?
+    .validates.js-message-errors
+        #error_messages.alert.alert-danger
+            ul 
+                - message.errors.full_messages.each do |msg|
+                    li = msg

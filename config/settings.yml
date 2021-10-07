@@ -9,4 +9,7 @@ meta:
   og:
     type: website
     image_path: ogp.png
+payjp:
+  pk: <%= Rails.application.credentials[:payjp][:pk] %>
+  sk: <%= Rails.application.credentials[:payjp][:sk] %>
     

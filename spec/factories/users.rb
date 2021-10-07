@@ -13,6 +13,7 @@
 #  username                :string(255)      not null
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
+#  customer_id             :string(255)
 #
 # Indexes
 #
@@ -24,5 +25,11 @@ FactoryBot.define do
     password { 'password' }
     password_confirmation { 'password' }
     username { Faker::Name.name }
+    customer_id { SecureRandom.uuid }
+
+    trait :without_customer_id do
+      customer_id { nil }
+    end
+    
   end
 end
