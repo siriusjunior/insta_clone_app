@@ -89,7 +89,7 @@ RSpec.describe 'チャット', type: :system do
                 @chatroom = Chatroom.chatroom_for_users([non_subscriber] + [invited])
                 messages = create_list(:message, 9, user: non_subscriber, chatroom: @chatroom)
             end
-            it 'メッセージの10件目を投稿したら、ボタンが無効化されること' do
+            it 'メッセージの10件目を投稿したら、ボタンが無効化されること', js: true do
                 # メッセージを入力する
                 fill_in 'message-form', with: 'Lorem ipsum dolor sit amet'
                 # POSTボタンを押す
@@ -98,7 +98,7 @@ RSpec.describe 'チャット', type: :system do
                 expect(page).to have_content 'Lorem ipsum dolor sit amet'
                 expect(page).to have_css('.disabled')
             end
-            it 'メッセージの11件目を投稿しようとすると、alertが表示されること' do
+            it 'メッセージの11件目を投稿しようとすると、alertが表示されること', js: true do
                 fill_in 'message-form', with: 'Lorem ipsum dolor sit amet'
                 click_on 'POST'
                 fill_in 'message-form', with: 'Bibendum ut tristique et'
@@ -108,7 +108,7 @@ RSpec.describe 'チャット', type: :system do
                 expect(page).to have_css('.validates')
                 expect(page).to have_css('.disabled')
             end
-            it '上限エラーがでた状態でメッセージを1件削除し、空き枠を作るとalertが消えるとともに、ボタンが再度有効化され投稿ができること' do
+            it '上限エラーがでた状態でメッセージを1件削除し、空き枠を作るとalertが消えるとともに、ボタンが再度有効化され投稿ができること', js: true do
                 fill_in 'message-form', with: 'Lorem ipsum dolor sit amet'
                 click_on 'POST'
                 fill_in 'message-form', with: 'Bibendum ut tristique et'
@@ -134,7 +134,7 @@ RSpec.describe 'チャット', type: :system do
                 @chatroom = Chatroom.chatroom_for_users([basic_plan_user] + [invited])
                 messages = create_list(:message, 19, user: basic_plan_user, chatroom: @chatroom)
             end
-            it 'メッセージの20件目を投稿したら、ボタンが無効化されること' do
+            it 'メッセージの20件目を投稿したら、ボタンが無効化されること', js: true do
                 # メッセージを入力する
                 fill_in 'message-form', with: 'Lorem ipsum dolor sit amet'
                 # POSTボタンを押す
@@ -143,7 +143,7 @@ RSpec.describe 'チャット', type: :system do
                 expect(page).to have_content 'Lorem ipsum dolor sit amet'
                 expect(page).to have_css('.disabled')
             end
-            it 'メッセージの21件目を投稿しようとすると、alertが表示されること' do
+            it 'メッセージの21件目を投稿しようとすると、alertが表示されること', js: true do
                 fill_in 'message-form', with: 'Lorem ipsum dolor sit amet'
                 click_on 'POST'
                 fill_in 'message-form', with: 'Bibendum ut tristique et'
@@ -152,7 +152,7 @@ RSpec.describe 'チャット', type: :system do
                 expect(page).not_to have_content 'Bibendum ut tristique et'
                 expect(page).to have_css('.validates')
             end
-            it '上限エラーがでた状態でメッセージを1件削除し、空き枠を作るとalertが消えるとともに、ボタンが再度有効化され投稿ができること' do
+            it '上限エラーがでた状態でメッセージを1件削除し、空き枠を作るとalertが消えるとともに、ボタンが再度有効化され投稿ができること', js: true do
                 fill_in 'message-form', with: 'Lorem ipsum dolor sit amet'
                 click_on 'POST'
                 fill_in 'message-form', with: 'Bibendum ut tristique et'
@@ -189,7 +189,7 @@ RSpec.describe 'チャット', type: :system do
         end
     end
     describe '文字数の制限' do
-        it '文字数制限を超えたメッセージを投稿するとalertが表示されること' do
+        it '文字数制限を超えたメッセージを投稿するとalertが表示されること', js: true do
             login_as login_user
             visit user_path(user)
             click_on 'Message'
@@ -197,7 +197,7 @@ RSpec.describe 'チャット', type: :system do
             click_on 'POST'
             expect(page).to have_css('.validates')
         end
-        it 'メッセージの文字数が230文字以内であれば、再度投稿ができるとともにalertが消えること' do
+        it 'メッセージの文字数が230文字以内であれば、再度投稿ができるとともにalertが消えること', js: true do
             login_as login_user
             visit user_path(user)
             click_on 'Message'
