@@ -34,8 +34,8 @@ RSpec.describe PayjpCustomer, type: :model do
 
     describe 'インスタンスメソッド' do
         let(:user){ create(:user) }
-        let(:basic_plan){ create(:plan, :basic_plan) }
-        let(:premium_plan){ create(:plan, :premium_plan) }
+        let!(:basic_plan){ create(:plan, :basic_plan) }
+        let!(:premium_plan){ create(:plan, :premium_plan) }
 
         describe 'latest_contract' do
             let!(:old_contract) { user.subscript!(basic_plan) }
@@ -157,6 +157,50 @@ RSpec.describe PayjpCustomer, type: :model do
                 expect{
                     user.pay!
                 }.to change{ Payment.count }.by(1)
+            end
+        end
+
+        describe 'cannot_message?' do
+            let!(:invited) { create(:user) }
+            context '未契約ユーザーの場合' do
+                before do
+                    @chatroom = Chatroom.chatroom_for_users([user] + [invited])
+                end
+                it 'メッセージが0件でもfalseが返ること' do
+                    expect(user.cannot_message?).to be_falsey
+                end
+                it 'メッセージが10件に達していたらtrueが返ること' do
+                    create_list(:message, 10, user: user, chatroom: @chatroom)
+                    expect(user.cannot_message?).to be_truthy
+                end
+            end
+            context 'ベーシックプラン契約ユーザーの場合' do
+                before do
+                    @chatroom = Chatroom.chatroom_for_users([user] + [invited])
+                    user.subscript!(basic_plan)
+                end
+                it 'メッセージが10件でもfalseが返ること' do
+                    create_list(:message, 10, user: user, chatroom: @chatroom)
+                    expect(user.cannot_message?).to be_falsey
+                end
+                it 'メッセージが20件に達していたらtrueが返ること' do
+                    create_list(:message, 20, user: user, chatroom: @chatroom)
+                    expect(user.cannot_message?).to be_truthy
+                end
+            end
+            context 'プレミアムプラン契約ユーザーの場合' do
+                before do
+                    @chatroom = Chatroom.chatroom_for_users([user] + [invited])
+                    user.subscript!(premium_plan)
+                end
+                it 'メッセージが20件でもfalseが返ること' do
+                    create_list(:message, 20, user: user, chatroom: @chatroom)
+                    expect(user.cannot_message?).to be_falsey
+                end
+                it 'メッセージが30件に達していてもfalseが返ること' do
+                    create_list(:message, 30, user: user, chatroom: @chatroom)
+                    expect(user.cannot_message?).to be_falsey
+                end
             end
         end
     end

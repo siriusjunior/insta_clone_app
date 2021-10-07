@@ -63,7 +63,7 @@ module PayjpCustomer
     end
 
     def cannot_message?
-        subscripting_basic_plan? && messages.where(created_at: latest_contract.current_period_start...latest_contract.current_period_end).size >= 20 || !subscripting_premium_plan? && !subscripting_basic_plan? && messages.size >= 10
+        subscripting_basic_plan? && messages.where(created_at: latest_contract.current_period_start...latest_contract.current_period_end).count >= 20 || !subscripting_premium_plan? && !subscripting_basic_plan? && messages.count >= 10
     end
 
     # userモデルとの連携準備
